@@ -1,16 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import URLValidator
-
-# Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=30, null=False, blank=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    password = models.CharField(max_length=300, null=False, blank=False)
-    image = models.CharField(max_length=300, null=True, blank=True, validators=[URLValidator()])
-
-    def __str__(self):
-        return self.name + "__" + self.email;
+from django.contrib.auth.models import User
 
 class Note(models.Model):
     title=models.CharField(max_length=200, null=False, blank=False)

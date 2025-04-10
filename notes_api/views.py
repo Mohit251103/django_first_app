@@ -11,7 +11,21 @@ def getNotes(request, user_id):
 
 @api_view(['POST'])
 def createNotes(request, user_id):
+    user = User.notes_set.all()
     serializer = NoteSerializer(data=request.data)
+    if(serializer.is_valid()):
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getUser(request, user_id):
+    user = User.objects.filter(id=user_id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def createUser(request):
+    serializer = UserSerializer(data=request.data)
     if(serializer.is_valid()):
         serializer.save()
     return Response(serializer.data)
