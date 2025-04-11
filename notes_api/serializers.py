@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data.get("email")
         )
         user.set_password(validated_data['password'])
+        user.save()
         return user
 
 class NoteSerializer(serializers.ModelSerializer):

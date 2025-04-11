@@ -1,12 +1,14 @@
-import Login from "./components/Login"
+import { Route, Routes } from "react-router-dom"
+import Register from "./components/Register"
+import Login from "./components/Login";
 
 function App() {
-
   return (
     <>
-      <div className="flex justify-center items-center h-[100vh]">
-        <Login/>
-      </div>
+      <Routes>
+        <Route path="/" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+      </Routes>
     </>
   )
 }
