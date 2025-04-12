@@ -10,4 +10,4 @@ class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title + "__by_" + self.user.name + "_" + str(self.user.id) + "__" + str(self.created_at)
+        return self.title + "__by_" + self.user.username + "_" + str(self.user.id) + "__" + str(self.created_at)

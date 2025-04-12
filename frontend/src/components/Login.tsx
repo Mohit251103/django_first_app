@@ -2,14 +2,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import zod from "zod"
 import { axiosInstance } from "../utils/axiosInstance";
-
-const Error = ({ message }: { message: string }) => {
-    return (
-        <p className="text-red-500 text-sm">{message}</p>
-    )
-}
+import Error from "./ErrorFormMessage";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(false);
     const {
         handleSubmit,
         register,
@@ -22,8 +21,17 @@ const Login = () => {
     })
 
     const submitForm = async (data: any) => {
-        const res = await axiosInstance.post("/user/login/", data)
-        console.log(res);
+        setLoading(true);
+        try {
+            const res = await axiosInstance.post("/user/login/", data)
+            console.log(res);   
+            navigate("/dashboard");
+        } catch (error) {
+            console.log(error);
+        }
+        finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -39,7 +47,7 @@ const Login = () => {
                     {errors.password && <Error message={errors.password.message!}></Error>}
 
                     <p className="text-sm">Don't have an account? <a href="/register" className="text-blue-600 underline">Register</a></p>
-                    <button type="submit" className="p-2 rounded-lg text-sm border w-fit h-fit my-1">Login</button>
+                    <button type="submit" className="p-2 rounded-lg text-sm border w-fit h-fit my-1">{loading ? "Loading..." : "Login"}</button>
                 </form>
             </div>
         </div>

@@ -35,17 +35,19 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         return response
 
 @api_view(['GET'])
-def getNotes(request, user_id):
-    notes = Note.objects.filter(user__id=user_id)
+def getNotes(request):
+    notes = Note.objects.filter(user__id=request.user.id)
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
-def createNotes(request, user_id):
-    user = User.notes_set.all()
+def createNotes(request):
     serializer = NoteSerializer(data=request.data)
-    if(serializer.is_valid()):
-        serializer.save()
+    if(serializer.is_valid()):  
+        serializer.save(user=request.user)
+    print(serializer.is_valid())
+    print(serializer.errors)
+    print(request.user)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -55,4 +57,13 @@ def createUser(request):
     if(serializer.is_valid()):
         serializer.save()
     return Response(serializer.data, status=200)
+
+@api_view(['GET'])
+def getUser(request):
+    if request.user.is_authenticated:
+        return Response({
+            "id": request.user.id,
+            "username": request.user.username
+        })
+    return Response({"error": "Unauthorized"}, status=401)
 
