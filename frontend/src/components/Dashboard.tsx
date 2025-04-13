@@ -1,24 +1,8 @@
-import { useEffect, useState } from "react";
 import AddNote from "./AddNotes"
-import { axiosInstance } from "../utils/axiosInstance";
-// import { useGetUser } from "../context/UserContext";
+import { useNote } from "../context/NoteContext";
 
-type INote = {
-    title: String,
-    content: String
-}
 const Dashboard = () => {
-    const [notes, setNotes] = useState<INote[]>([]);
-    // const { user } = useGetUser();
-    useEffect(() => {
-        const getNotes = async () => {
-            // console.log(user.id)
-            const res = await axiosInstance.get(`/notes/get/`);
-            setNotes(res.data);
-            console.log(res.data)
-        }
-        getNotes();
-    }, [])
+    const { notes } = useNote();
 
     return (
         <div className="flex flex-col justify-center items-center">

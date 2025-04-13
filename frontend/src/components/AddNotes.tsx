@@ -2,13 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import zod from "zod"
 import Error from "./ErrorFormMessage"
-// import { useGetUser } from "../context/UserContext"
 import { axiosInstance } from "../utils/axiosInstance"
+import { useNote } from "../context/NoteContext"
 
 
 const AddNote = () => {
-
-    // const { user } = useGetUser();
+    const { getNotes } = useNote()
     const {
         register,
         handleSubmit,
@@ -24,6 +23,7 @@ const AddNote = () => {
         try {
             const res = await axiosInstance.post(`/notes/create/`, data)
             console.log(res);
+            getNotes();
         } catch (error) {
             console.log(error);
         }
