@@ -9,12 +9,16 @@ const Dashboard = () => {
             <AddNote />
             {!notes.length && <p className="text-md">No notes found !!</p>}
             {!!notes.length && 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 w-[70rem]">
                     {notes.map((note, index) => {
                         return (
-                            <div key={index} className="w-[10rem] h-[15rem] rounded-lg border-1 hover:opacity-80 flex flex-col justify-center items-left">
-                                <p className="text-lg font-bold">{note.title}</p>
-                                <p className="text-md font-md">{note.content}</p>
+                            <div key={index} className="w-[15rem] h-fit rounded-lg border-1 flex flex-col justify-center items-left divide-y">
+                                <div className="bg-amber-200 rounded-t-lg">
+                                    <p className="text-lg font-bold ml-2">{index + 1}.{" "}{note.title}</p>
+                                </div>
+                                <div>
+                                    <p className="text-md font-md mx-2">{note.content}</p>
+                                </div>
                             </div>
                         )
                     })}
