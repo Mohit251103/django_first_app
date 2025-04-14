@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { axiosInstance } from "../utils/axiosInstance";
 
 type INote = {
+    id: number,
     title: String,
     content: String
 }
@@ -9,13 +10,15 @@ type INote = {
 type INoteContext = {
     notes: INote[],
     setNotes: React.Dispatch<React.SetStateAction<INote[]>>,
-    getNotes: () => void
+    getNotes: () => void,
+    deleteNote: (id: number) => void
 }
 
 const NoteContext = createContext<INoteContext>({
     notes: [],
     setNotes: () => {},
-    getNotes: () => {}
+    getNotes: () => { },
+    deleteNote: () => { }
 })
 
 const NoteProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,11 +32,19 @@ const NoteProvider = ({ children }: { children: React.ReactNode }) => {
             console.log(error)
         }
     }
-    useEffect(() => {
-        getNotes();
-    }, [])
+
+    const deleteNote = async (id: number) => {
+        try {
+            const res = await axiosInstance.delete(`/notes/delete/${id}/`);
+            console.log(res);
+            getNotes();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <NoteContext.Provider value={{notes, setNotes, getNotes}}>
+        <NoteContext.Provider value={{notes, setNotes, getNotes, deleteNote}}>
             {children}
         </NoteContext.Provider>
     )

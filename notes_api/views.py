@@ -26,6 +26,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             response.set_cookie(
                 key="refresh_token",
                 value=refresh_token,
+                max_age=30*24*60*60,
                 secure=False,
                 httponly=True,
                 samesite='Lax'
@@ -45,10 +46,17 @@ def createNotes(request):
     serializer = NoteSerializer(data=request.data)
     if(serializer.is_valid()):  
         serializer.save(user=request.user)
-    print(serializer.is_valid())
-    print(serializer.errors)
-    print(request.user)
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deleteNote(request, note_id):
+    try:
+        print("here")
+        note = Note.objects.filter(id=note_id, user=request.user)
+        note.delete()
+        return Response("Note deleted successfully", status=200)
+    except Note.DoesNotExist:
+        return Response("Note does not exist", status=404)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
