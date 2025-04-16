@@ -3,9 +3,12 @@ import { useNote } from "../context/NoteContext";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import UpdateNote from "./UpdateNote";
 
 const Dashboard = () => {
+    const [updating, setUpdating] = useState<boolean>(false);
+    const [updateData, setUpdateData] = useState({ id: null, title: "", content: "" });
     const { notes, getNotes, deleteNote } = useNote();
     const containerVariants = {
         hidden: {
@@ -31,8 +34,9 @@ const Dashboard = () => {
         deleteNote(id);
     }
 
-    const handleUpdateNote = async (id: number) => {
-        console.log(id)
+    const handleUpdateNote = async (id: number, data: any) => {
+        setUpdateData({ id, ...data })
+        setUpdating(true);
     }
 
     useEffect(() => {
@@ -41,6 +45,11 @@ const Dashboard = () => {
 
     return (
         <div className="flex flex-col justify-center items-center">
+            {updating &&
+                <UpdateNote
+                    data={updateData}
+                    onClose={() => { setUpdateData({ id: null, title: "", content: "" }); setUpdating(false); }} />
+            }
             <AddNote />
             {!notes.length && <p className="text-md">No notes found !!</p>}
             {!!notes.length &&
@@ -74,7 +83,7 @@ const Dashboard = () => {
                                         <button className="w-fit h-fit hover:cursor-pointer hover:scale-110 transiton duration-250" onClick={() => { handleDeleteNote(note.id) }}>
                                             <MdDeleteOutline className="w-6 h-6" />
                                         </button>
-                                        <button className="w-fit h-fit" onClick={() => handleUpdateNote(note.id)}>
+                                        <button className="w-fit h-fit" onClick={() => handleUpdateNote(note.id, { title: note.title, content: note.content })}>
                                             <FaEdit className="w-5 h-5" />
                                         </button>
                                     </div>

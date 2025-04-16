@@ -51,12 +51,23 @@ def createNotes(request):
 @api_view(['DELETE'])
 def deleteNote(request, note_id):
     try:
-        print("here")
-        note = Note.objects.filter(id=note_id, user=request.user)
+        note = Note.objects.get(id=note_id, user=request.user)
         note.delete()
         return Response("Note deleted successfully", status=200)
     except Note.DoesNotExist:
         return Response("Note does not exist", status=404)
+    
+@api_view(['PUT'])
+def updateNote(request, note_id):
+    try:
+        note = Note.objects.get(id=note_id, user=request.user)
+    except Note.DoesNotExist:
+        return Response("Note does not exist", status=404)
+    serializer = NoteSerializer(instance=note, data=request.data)
+    if(serializer.is_valid()):
+        serializer.save()
+        return Response("Note Updated Successfully", status=200)
+    return Response(serializer.errors, status=400)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

@@ -11,14 +11,16 @@ type INoteContext = {
     notes: INote[],
     setNotes: React.Dispatch<React.SetStateAction<INote[]>>,
     getNotes: () => void,
-    deleteNote: (id: number) => void
+    deleteNote: (id: number) => void,
+    updateNote: (id: number, data: any) => void
 }
 
 const NoteContext = createContext<INoteContext>({
     notes: [],
     setNotes: () => {},
     getNotes: () => { },
-    deleteNote: () => { }
+    deleteNote: () => { },
+    updateNote: () => { }
 })
 
 const NoteProvider = ({ children }: { children: React.ReactNode }) => {
@@ -43,8 +45,18 @@ const NoteProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const updateNote = async (id: number, data: any) => {
+        try {
+            const res = await axiosInstance.put(`/notes/update/${id}/`, data);
+            console.log(res);
+            getNotes();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <NoteContext.Provider value={{notes, setNotes, getNotes, deleteNote}}>
+        <NoteContext.Provider value={{notes, setNotes, getNotes, deleteNote, updateNote}}>
             {children}
         </NoteContext.Provider>
     )
