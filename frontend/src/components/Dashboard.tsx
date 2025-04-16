@@ -23,9 +23,8 @@ const Dashboard = () => {
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: -10, transiton: { duration: 0.3 } },
-        show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-        exit: { opacity: 0, x: -20, transition: { duration: 0.3 } }
+        hidden: { scale: 0.8, opacity: 0, transition: { duration: 0.3 } },
+        show: { scale: 1, opacity: 1, transition: { duration: 0.3 } }
     };
 
     const handleDeleteNote = async (id: number) => {
@@ -49,17 +48,22 @@ const Dashboard = () => {
                     key={"unique_key"}
                     initial="hidden"
                     animate="show"
-                    exit="hidden"
                     variants={containerVariants}
                     className="flex flex-wrap gap-4 w-[70rem]">
 
-                    <AnimatePresence >
+                    <AnimatePresence>
                         {notes.map((note, index) => {
                             return (
                                 <motion.div
                                     layout
+                                    exit={{
+                                        scale: 0.8,
+                                        opacity: 0,
+                                        transition: { duration: 0.2 }
+                                    }}
                                     variants={itemVariants}
-                                    key={note.title.split(' ').join('-')} className="w-[15rem] h-fit rounded-lg border-1 flex flex-col justify-center items-left gap-y-2">
+                                    key={`note-no-${note.id}`}
+                                    className="w-[15rem] h-fit rounded-lg border-1 flex flex-col justify-center items-left gap-y-2">
                                     <div className="bg-amber-200 rounded-t-lg">
                                         <p className="text-lg font-bold ml-2">{index + 1}.{" "}{note.title}</p>
                                     </div>
@@ -67,7 +71,7 @@ const Dashboard = () => {
                                         <p className="text-md font-md mx-2">{note.content}</p>
                                     </div>
                                     <div className="flex gap-4 mx-2 mb-2 items-center">
-                                        <button className="w-fit h-fit hover:cursor-pointer hover:scale-110 transiton duration-250" onClick={() => handleDeleteNote(note.id)}>
+                                        <button className="w-fit h-fit hover:cursor-pointer hover:scale-110 transiton duration-250" onClick={() => { handleDeleteNote(note.id) }}>
                                             <MdDeleteOutline className="w-6 h-6" />
                                         </button>
                                         <button className="w-fit h-fit" onClick={() => handleUpdateNote(note.id)}>
