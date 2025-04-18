@@ -5,6 +5,7 @@ import Error from "./ErrorFormMessage"
 import { axiosInstance } from "../utils/axiosInstance"
 import { useNote } from "../context/NoteContext"
 import { useState } from "react"
+import { getCookie } from "../utils/getCookie"
 
 
 const AddNote = () => {

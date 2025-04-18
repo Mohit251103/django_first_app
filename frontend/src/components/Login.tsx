@@ -5,6 +5,7 @@ import { axiosInstance } from "../utils/axiosInstance";
 import Error from "./ErrorFormMessage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BsGoogle } from "react-icons/bs";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Login = () => {
         setLoading(true);
         try {
             const res = await axiosInstance.post("/user/login/", data)
-            console.log(res);   
+            console.log(res);
             navigate("/dashboard");
         } catch (error) {
             console.log(error);
@@ -32,6 +33,10 @@ const Login = () => {
         finally {
             setLoading(false);
         }
+    }
+
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8000/auth/login/google-oauth2/";
     }
 
     return (
@@ -47,7 +52,15 @@ const Login = () => {
                     {errors.password && <Error message={errors.password.message!}></Error>}
 
                     <p className="text-sm">Don't have an account? <a href="/register" className="text-blue-600 underline">Register</a></p>
-                    <button type="submit" className="p-2 rounded-lg text-sm border w-fit h-fit my-1">{loading ? "Loading..." : "Login"}</button>
+                    <div className="flex justify-left items-center">
+                        <button type="submit" className="p-2 rounded-lg text-sm border w-fit h-fit m-1">{loading ? "Loading..." : "Login"}</button>
+                        <button
+                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1 flex justify-center items-center gap-2"
+                            onClick={handleGoogleLogin}
+                        >
+                            Login with Google<BsGoogle className="w-4 h-4" />
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
