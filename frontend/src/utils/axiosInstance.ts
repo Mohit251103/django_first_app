@@ -1,13 +1,13 @@
 import axios from "axios";
 import { getCookie } from "./getCookie";
 
-const csrfToken = getCookie("csrftoken");
+const csrfToken = getCookie("csrf_token");
 console.log(csrfToken);
 
 export const axiosInstance = axios.create({
     baseURL: "http://localhost:8000/api/v1",
     withCredentials: true,
     headers: {
-        "X-CSRF-Token": csrfToken
+        "X-CSRFToken": csrfToken
     }
 });

@@ -79,7 +79,6 @@ def createUser(request):
 
 @api_view(['GET'])
 def getUser(request):
-    print(request.headers)
     if request.user.is_authenticated:
         return Response({
             "id": request.user.id,

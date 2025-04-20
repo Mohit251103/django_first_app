@@ -90,6 +90,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS=["http://localhost:5173"]
+CSRF_COOKIE_NAME="csrf_token"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax" 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173"
@@ -98,6 +102,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     # Add any custom headers if needed, e.g.:
     "x-csrf-token",
+    "x-csrftoken",
+    "X-CSRFToken"
 ]
 
 # Database

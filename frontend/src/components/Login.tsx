@@ -35,8 +35,9 @@ const Login = () => {
         }
     }
 
-    const handleGoogleLogin = () => {
+    const handleGoogleLogin = (e: any) => {
         window.location.href = "http://localhost:8000/auth/login/google-oauth2/";
+        e.stopPropagation();
     }
 
     return (
@@ -53,8 +54,14 @@ const Login = () => {
 
                     <p className="text-sm">Don't have an account? <a href="/register" className="text-blue-600 underline">Register</a></p>
                     <div className="flex justify-left items-center">
-                        <button type="submit" className="p-2 rounded-lg text-sm border w-fit h-fit m-1">{loading ? "Loading..." : "Login"}</button>
                         <button
+                            type="submit"
+                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1"
+                        >
+                            {loading ? "Loading..." : "Login"}
+                        </button>
+                        <button
+                            type="button"
                             className="p-2 rounded-lg text-sm border w-fit h-fit m-1 flex justify-center items-center gap-2"
                             onClick={handleGoogleLogin}
                         >
