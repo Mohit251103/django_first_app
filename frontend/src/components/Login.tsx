@@ -6,10 +6,12 @@ import Error from "./ErrorFormMessage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsGoogle } from "react-icons/bs";
+import { useGetUser } from "../context/UserContext";
 
 const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
+    const { getUser } = useGetUser();
     const {
         handleSubmit,
         register,
@@ -25,13 +27,15 @@ const Login = () => {
         setLoading(true);
         try {
             const res = await axiosInstance.post("/user/login/", data)
-            console.log(res);
+            if (res.status==200 || res.status==201) {
+                await getUser();
+            }
             navigate("/dashboard");
         } catch (error) {
             console.log(error);
         }
         finally {
-            setLoading(false);
+            setLoading(false);  
         }
     }
 
@@ -56,13 +60,13 @@ const Login = () => {
                     <div className="flex justify-left items-center">
                         <button
                             type="submit"
-                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1"
+                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1 hover:scale-105 transition duration-250 hover:cursor-pointer"
                         >
                             {loading ? "Loading..." : "Login"}
                         </button>
                         <button
                             type="button"
-                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1 flex justify-center items-center gap-2"
+                            className="p-2 rounded-lg text-sm border w-fit h-fit m-1 flex justify-center items-center gap-2 hover:scale-105 transition duration-250 hover:cursor-pointer"
                             onClick={handleGoogleLogin}
                         >
                             Login with Google<BsGoogle className="w-4 h-4" />

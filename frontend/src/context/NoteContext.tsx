@@ -29,7 +29,6 @@ const NoteProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await axiosInstance.get(`/notes/get/`);
             setNotes(res.data);
-            console.log(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -37,8 +36,7 @@ const NoteProvider = ({ children }: { children: React.ReactNode }) => {
 
     const deleteNote = async (id: number) => {
         try {
-            const res = await axiosInstance.delete(`/notes/delete/${id}/`);
-            console.log(res);
+            await axiosInstance.delete(`/notes/delete/${id}/`);
             getNotes();
         } catch (error) {
             console.log(error);
@@ -47,8 +45,7 @@ const NoteProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updateNote = async (id: number, data: any) => {
         try {
-            const res = await axiosInstance.put(`/notes/update/${id}/`, data);
-            console.log(res);
+            await axiosInstance.put(`/notes/update/${id}/`, data);
             getNotes();
         } catch (error) {
             console.log(error);

@@ -1,30 +1,45 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { axiosInstance } from "../utils/axiosInstance";
 
-// type IUser = {
-//     id: String,
-//     username: String
-// }
+type IUser = {
+    id: string,
+    username: string
+}
 
-const UserContext = createContext({
-    user: {id:"", username:""}
+type IUserContext = {
+    user: {
+        id: string,
+        username: string
+    },
+    setUser: React.Dispatch<React.SetStateAction<IUser>>,
+    getUser: () => void
+}
+
+const UserContext = createContext<IUserContext>({
+    user: { id: "", username: "" },
+    setUser: () => { },
+    getUser: () => { }
 })
 
 const UserProvider = (
     {children} : {children: React.ReactNode}
 ) => {
     const [user, setUser] = useState({id:"", username: ""});
-    useEffect(() => {
-        const getUser = async () => {
+    const getUser = async () => {
+        try {
             const res = await axiosInstance.get('/user/get');
-            console.log(res.data)
-            setUser(res.data)
+            localStorage.setItem("username", res.data.username);
+            setUser(res.data);
+        } catch (error) {
+            console.log(error);
+            return;
         }
-
+    }
+    useEffect(() => {
         getUser();
     }, [])
     return (
-        <UserContext.Provider value={{user}}>
+        <UserContext.Provider value={{user, setUser, getUser}}>
             {children}
         </UserContext.Provider>
     )

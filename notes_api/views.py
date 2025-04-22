@@ -1,9 +1,13 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework import status
 from .models import User, Note
 from .serializers import UserSerializer, NoteSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 class CookieTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -85,4 +89,33 @@ def getUser(request):
             "username": request.user.username
         })
     return Response({"error": "Unauthorized"}, status=401)
+
+@api_view(['GET'])
+def logout_custom(request):
+    refresh_token = request.COOKIES.get("refresh_token")
+    response = Response()
+    # response = redirect("http://localhost:5173")
+    if refresh_token:
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+            response.data = {"message":"User logged out successfully"}
+            response.status_code = status.HTTP_200_OK
+            return response 
+        except TokenError:
+            return Response({"message": "Token invalid or expired"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.user.is_authenticated:
+        logout(request._request)
+        response.delete_cookie("csrf_token")
+        response.delete_cookie("sessionid")
+        response.data = {"message":"User logged out successfully"}
+        response.status_code = status.HTTP_200_OK
+        return response
+
+    response.data = {"message": "No valid user"}
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return response
 

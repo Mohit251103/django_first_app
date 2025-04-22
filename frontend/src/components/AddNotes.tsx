@@ -5,7 +5,6 @@ import Error from "./ErrorFormMessage"
 import { axiosInstance } from "../utils/axiosInstance"
 import { useNote } from "../context/NoteContext"
 import { useState } from "react"
-import { getCookie } from "../utils/getCookie"
 
 
 const AddNote = () => {
@@ -60,7 +59,7 @@ const AddNote = () => {
                 />
                 {errors.content && <Error message={errors.content.message!} />}
 
-                <button className="p-2 w-fit h-fit my-2 bg-amber-200 rounded-lg border-1" type="submit">Add Note</button>
+                <button className="p-2 w-fit h-fit my-2 bg-amber-200 rounded-lg border-1 hover:cursor-pointer" type="submit">Add Note</button>
             </form>
         </div>
     )

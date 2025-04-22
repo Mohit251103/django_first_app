@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'notes_api.apps.NotesApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'rest_framework_simplejwt.token_blacklist',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -69,9 +70,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/auth/login/google-oauth2/'
-LOGOUT_URL = 'logout'
+# LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'http://localhost:5173/dashboard'
-LOGOUT_REDIRECT_URL = 'http://localhost:5173'
+# LOGOUT_REDIRECT_URL = 'http://localhost:5173'
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/auth/complete/google-oauth2/'
 
 ROOT_URLCONF = 'mysite.urls'

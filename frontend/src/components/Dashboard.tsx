@@ -5,11 +5,16 @@ import { FaEdit } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react";
 import UpdateNote from "./UpdateNote";
+import Nav from "./Nav";
+import { BiLoaderCircle } from "react-icons/bi";
+import { useGetUser } from "../context/UserContext";
 
 const Dashboard = () => {
     const [updating, setUpdating] = useState<boolean>(false);
     const [updateData, setUpdateData] = useState({ id: null, title: "", content: "" });
     const { notes, getNotes, deleteNote } = useNote();
+    const { getUser } = useGetUser();
+    // const [loading, setLoading] = useState<boolean>(true);
     const containerVariants = {
         hidden: {
             transition: {
@@ -40,11 +45,28 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-        getNotes();
+        const fetchUser = async () => { 
+            await getUser();
+            if (!localStorage.getItem("username")) {
+                window.location.href = "http://localhost:5173";
+            }
+            getNotes();
+        }
+        fetchUser();
     }, [])
+
+
+    if (!localStorage.getItem("username")) {
+        return (
+            <div className="h-[100vh] w-[100vw] flex justify-center items-center bg-black/75 backdrop-blur-2xl">
+                <BiLoaderCircle className="animate-spin w-6 h-6" color="black" />
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col justify-center items-center">
+            <Nav/>
             {updating &&
                 <UpdateNote
                     data={updateData}
