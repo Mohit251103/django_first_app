@@ -2,12 +2,12 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { useGetUser } from "../context/UserContext";
 import { axiosInstance } from "../utils/axiosInstance";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useTheme } from "../context/ThemeContext";
 
 const Nav = () => {
     const { user } = useGetUser();
-    const [mode, setMode] = useState<string>("dark");
+    const { theme, toggleTheme } = useTheme();
     const handleLogout = async () => {
         try {
             await axiosInstance.get("/user/logout/");
@@ -18,14 +18,8 @@ const Nav = () => {
         }
     }
 
-    const handleModeToggle = () => {
-        const newTheme = mode === "dark" ? "light" : "dark";
-        setMode(newTheme)
-        document.documentElement.classList.add(newTheme);
-    }
-
     return (
-        <div className="my-4 w-[70vw] flex justify-between mx-auto items-center">
+        <div className="my-4 w-[70vw] flex dark:text-white dark:bg-black justify-between mx-auto items-center">
             <h2 className="text-lg font-bold flex justify-center items-center gap-2">
                 <FaNoteSticky className="w-6 h-6" />
                 <p>Django-First-Notes</p>
@@ -38,10 +32,10 @@ const Nav = () => {
                                 duration: 0.3
                             }
                         }}
-                        onClick={handleModeToggle} className={`w-[65px] h-fit rounded-full border mr-5 flex p-1 
-                    ${mode === "light" ? "justify-left" : "justify-end"} items-center`}>
+                        onClick={toggleTheme} className={`w-[65px] h-fit rounded-full border mr-5 flex p-1 
+                    ${theme === "light" ? "justify-left" : "justify-end"} items-center`}>
                         <div className={`rounded-full p-1 hover:bg-gray-400/70`}>
-                            {mode === "light" &&
+                            {theme === "light" &&
                                 <motion.div
                                     initial={{
                                         opacity: 0,
@@ -58,7 +52,7 @@ const Nav = () => {
                                    <MdLightMode className="w-4 h-4" />
                                </motion.div>
                             }
-                            {mode === "dark" &&
+                            {theme === "dark" &&
                                 <motion.div
                                     initial={{
                                         opacity: 0,

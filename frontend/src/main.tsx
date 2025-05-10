@@ -5,13 +5,16 @@ import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './context/UserContext.tsx'
 import { NoteProvider } from './context/NoteContext.tsx'
+import { ThemeProvider } from './context/ThemeContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
         <NoteProvider >
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </NoteProvider>
       </UserProvider>
     </BrowserRouter>

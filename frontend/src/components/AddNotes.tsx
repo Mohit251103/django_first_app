@@ -59,7 +59,7 @@ const AddNote = () => {
                 />
                 {errors.content && <Error message={errors.content.message!} />}
 
-                <button className="p-2 w-fit h-fit my-2 bg-amber-200 rounded-lg border-1 hover:cursor-pointer" type="submit">Add Note</button>
+                <button className="p-2 w-fit h-fit my-2 bg-amber-200 dark:text-black rounded-lg border-1 hover:cursor-pointer" type="submit">Add Note</button>
             </form>
         </div>
     )
