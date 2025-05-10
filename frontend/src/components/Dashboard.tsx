@@ -14,7 +14,6 @@ const Dashboard = () => {
     const [updateData, setUpdateData] = useState({ id: null, title: "", content: "" });
     const { notes, getNotes, deleteNote } = useNote();
     const { getUser } = useGetUser();
-    // const [loading, setLoading] = useState<boolean>(true);
     const containerVariants = {
         hidden: {
             transition: {
